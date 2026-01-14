@@ -7,10 +7,18 @@ export function App() {
     return (
         <>
             <Menu />
-            <div className="content">
-                <div className="conteudo">
+            <div id="container" className="container">
+                <div className="princ">
+                    <div id="newTask" className="newTask">
+                        <NewTask />
+                    </div>
+
+                    <div id="conteudo" className="conteudo">
+                        <p>TAREFAS</p>
+                    </div>
+                </div>
+                <div id="metricas" className="metricas">
                     <p>METRICAS</p>
-                    <NewTask />
                 </div>
             </div>
         </>

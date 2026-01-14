@@ -26,16 +26,41 @@ body {
     z-index: 1000;
 }
 
-.content {
+.container {
     margin-left: 300px;
     min-height: 100vh;
     padding: 20px;
     background-color: var(--primary-fundo);
+    display: flex;
+    gap: 1rem;
 }
 
 .conteudo {
     margin-left: 0.1rem;
-    min-height: 93vh;
+    min-height: 78vh;
+    min-width: 120vh;
+    margin-top: 3vh;
+    padding: 20px;
+    background-color: var(--primary-color);
+    border-radius: 2rem;
+    color: var(--primary);
+}
+
+.newTask {
+    margin-left: 0.1rem;
+    max-width: 120vh;
+    min-height: 10vh;
+    max-height: 12vh;
+    padding: 20px;
+    background-color: var(--primary-color);
+    border-radius: 2rem;
+    color: var(--primary);
+}
+
+.metricas {
+    margin-left: 0.1rem;
+    min-width: 44vh;
+    max-height: 93vh;
     padding: 20px;
     background-color: var(--primary-color);
     border-radius: 2rem;
