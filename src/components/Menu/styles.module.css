@@ -1,0 +1,16 @@
+.menu {
+    background-color: var(--primary);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    margin: 0;
+    z-index: 1000;
+}
+
+.menu .content {
+    text-align: right;
+    padding-right: 5rem;
+    padding-top:10rem;
+}

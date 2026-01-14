@@ -1,0 +1,15 @@
+.btn {
+    display: flex;
+    background-color: var(--primary);
+    padding: 1rem;
+    align-content: center;
+    color: var(--primary-fundo);
+    border-radius: 1rem;
+    border-color: transparent;
+    transition: 0.5s;
+}
+
+.btn:hover {
+    background-color: var(--primary-transition);
+    color: var(--primary);
+}
