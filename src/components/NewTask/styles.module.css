@@ -57,3 +57,7 @@ select, option {
 select:focus {
     border: 1px solid var(--primary);
 }
+
+.limite {
+    padding: 1rem;
+}

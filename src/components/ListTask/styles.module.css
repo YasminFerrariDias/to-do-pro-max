@@ -1,0 +1,82 @@
+.tasksContainer {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 40rem;
+    min-width: 71.5rem;
+    margin: 0;
+    align-content: flex-start;
+}
+
+.task {
+    width: calc(50% - 1rem); /* 2 cards por linha = 50% cada */
+    height: 7.5rem;
+    background: var(--primary-fundo);
+    border-radius: 1rem;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 1.3rem;
+    transition: 1s;
+}
+
+.task:hover {
+    transform: scaleY(1.5) scaleX(1.1);
+    transform-origin: center;
+    background-color: var(--primary-card);
+    color: var(--primary-color);
+    margin-top: 0.1rem;
+}
+
+.task:hover .taskContent {
+    font-size: 13px;
+    transform: translateY(-10px);
+}
+
+.title {
+    margin-right: 60rem;
+}
+
+.taskContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.taskTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.btnTask {
+    display: none; /* ou opacity: 0 */
+    transition: opacity 0.3s ease;
+}
+
+.task:hover .btnTask {
+    display: flex; /* ou opacity: 1 */
+    gap: 1.1rem;
+    font-size: 13px;
+}
+
+.btConcluida, .btEditar, .btDeletar {
+    padding: 0.2rem;
+    background-color: var(--primary-fundo);
+    color: var(--primary-color);
+    border: none;
+    font-size: 13px;
+    margin-top: 0.5rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    border-radius: 1rem;
+    transition: 0.5s;
+}
+
+.btConcluida:hover, .btEditar:hover, .btDeletar:hover {
+    background-color: var(--primary-color);
+    color: var(--primary);
+}
+

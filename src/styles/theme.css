@@ -1,8 +1,9 @@
 :root {
   --primary: #5252a4;
-  --primary-fundo: #aab3cc;
+  --primary-fundo: #c1c1e7;
   --primary-color: #fff;
   --primary-transition: #9393da;
+  --primary-card: #7c7cd3;
 
   --text-over-primary: #0a0f1a;
   --text-over-primary-dark: #e6e9f0;

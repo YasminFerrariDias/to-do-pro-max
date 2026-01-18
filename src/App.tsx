@@ -1,7 +1,8 @@
 import './styles/theme.css';
 import './styles/global.css';
-import {Menu} from "./components/Menu";
-import {NewTask} from "./components/NewTask";
+import { Menu } from "./components/Menu";
+import { NewTask } from "./components/NewTask";
+import {ListTask} from "./components/ListTask";
 
 export function App() {
     return (
@@ -14,7 +15,7 @@ export function App() {
                     </div>
 
                     <div id="conteudo" className="conteudo">
-                        <p>TAREFAS</p>
+                        <ListTask />
                     </div>
                 </div>
                 <div id="metricas" className="metricas">

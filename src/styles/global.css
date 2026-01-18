@@ -37,13 +37,17 @@ body {
 
 .conteudo {
     margin-left: 0.1rem;
-    min-height: 78vh;
-    min-width: 120vh;
+    height: 78vh;
+    width: 120vh;
     margin-top: 3vh;
     padding: 20px;
     background-color: var(--primary-color);
     border-radius: 2rem;
     color: var(--primary);
+    display: flex;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto; /* Permite rolagem */
 }
 
 .newTask {
