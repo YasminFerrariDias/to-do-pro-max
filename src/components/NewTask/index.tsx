@@ -103,6 +103,15 @@ export function NewTask() {
             const tarefasSalvas = localStorage.getItem('tarefas');
             const listaTarefas = tarefasSalvas ? JSON.parse(tarefasSalvas) : [];
 
+            const tarefaExistente = listaTarefas.find(tarefa =>
+                tarefa.title.toLowerCase() === titulo.toLowerCase()
+            );
+
+            if (tarefaExistente) {
+                alert('Já existe uma tarefa com este título!');
+                return;
+            }
+
             // adiciona a nova tarefa na lista
             listaTarefas.unshift(novaTarefa);
 

@@ -20,19 +20,6 @@
     transition: 1s;
 }
 
-.task:hover {
-    transform: scaleY(1.5) scaleX(1.1);
-    transform-origin: center;
-    background-color: var(--primary-card);
-    color: var(--primary-color);
-    margin-top: 0.1rem;
-}
-
-.task:hover .taskContent {
-    font-size: 13px;
-    transform: translateY(-10px);
-}
-
 .title {
     margin-right: 60rem;
 }
@@ -52,31 +39,34 @@
 }
 
 .btnTask {
-    display: none; /* ou opacity: 0 */
-    transition: opacity 0.3s ease;
-}
-
-.task:hover .btnTask {
-    display: flex; /* ou opacity: 1 */
-    gap: 1.1rem;
-    font-size: 13px;
+    margin-top: -1.9rem;
+    margin-left: 24.5rem;
 }
 
 .btConcluida, .btEditar, .btDeletar {
-    padding: 0.2rem;
     background-color: var(--primary-fundo);
-    color: var(--primary-color);
     border: none;
-    font-size: 13px;
-    margin-top: 0.5rem;
-    padding-right: 2rem;
-    padding-left: 2rem;
-    border-radius: 1rem;
-    transition: 0.5s;
+    margin-left: 0.5rem;
 }
 
-.btConcluida:hover, .btEditar:hover, .btDeletar:hover {
-    background-color: var(--primary-color);
-    color: var(--primary);
+.btnS, .btnC {
+    background-color: var(--primary-fundo);
+    border: none;
+    color: var(--primary-card);
 }
 
+.btnS {
+    margin-left: 14rem;
+}
+
+.btnC {
+    margin-left: 1rem;
+}
+
+.prioritiEdt {
+    padding: 1px;
+}
+
+.inpEdt {
+    padding: 0.5rem;
+}
