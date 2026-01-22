@@ -20,9 +20,6 @@
     transition: 1s;
 }
 
-.title {
-    margin-right: 60rem;
-}
 
 .taskContent {
     display: flex;
@@ -44,7 +41,7 @@
 }
 
 .btConcluida, .btEditar, .btDeletar {
-    background-color: var(--primary-fundo);
+    background-color: transparent;
     border: none;
     margin-left: 0.5rem;
 }
@@ -93,4 +90,14 @@
     width: 8rem;
     margin-top: -3rem;
     margin-left: 23.5rem;
+}
+
+.task.concluido {
+    background-color: var(--primary); /* Verde claro */
+    color: var(--primary-fundo);
+    opacity: 0.8;
+}
+
+.task.concluido .btConcluida XCircle, CheckCircle .btEditar, .btDeletar {
+    color: red;
 }

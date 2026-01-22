@@ -97,11 +97,11 @@ export function NewTask() {
                 completed: false,
                 priority: prioridade,
                 createdAt: Date.now(),
-                completedAt: null
+                completedAt: undefined
             }
 
             // busca tarefas existentes
-            const tarefasSalvas = localStorage.getItem('tarefas');
+
             const listaTarefas = tarefasSalvas ? JSON.parse(tarefasSalvas) : [];
 
             const tarefaExistente = listaTarefas.find((tarefa: { title: string; }) =>
@@ -119,6 +119,7 @@ export function NewTask() {
             // salva a nova lista no localStorage
             localStorage.setItem('tarefas', JSON.stringify(listaTarefas));
 
+            // recarrega a página porque não aparecia a tarefa antes
             window.location.reload();
 
             //some os campos para escrever e volta o botão

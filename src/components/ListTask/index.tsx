@@ -16,9 +16,18 @@ export function ListTask() {
 	const [editandoId, setEditandoId] = useState<number | null>(null);
 	const [novoTitulo, setNovoTitulo] = useState('');
 	const [novaPrioridade, setNovaPrioridade] = useState('');
-	/*const [filtro, setFiltro] = useState('todas');
-	const [ordenacao, setOrdenacao] = useState('prioridade');*/
+	const pendentes = tarefas.filter(t => !t.completed);
+	const concluidas = tarefas.filter(t => t.completed);
+	// define as prioridades dentro do pendentes e dos concluidos
+	const pendentesOrdenadas = ordenarPorPrioridade(pendentes);
+	const concluidasOrdenadas = ordenarPorPrioridade(concluidas);
+	// junta a lista ordenada pendente e concluida em uma só
+	const tarefasParaExibir = [...pendentesOrdenadas, ...concluidasOrdenadas];
+	// define o tempo limite
+	const tempoLimite = 7 * 24 * 60 * 60 * 1000;
+	// TESTE DE 10s const tempoLimite = 10 * 1000;
 	
+	// carrega os dados do local com localStorage
 	useEffect(() => {
 		const tarefasSalvas = localStorage.getItem('tarefas');
 		if (tarefasSalvas) {
@@ -28,31 +37,50 @@ export function ListTask() {
 					setTarefas(dados);
 				}
 			} catch (error) {
-				console.error('Erro ao carregar tarefas:', error);
+				console.log('Erro ao carregar tarefas!', error);
 			}
 		}
 	}, []);
 	
-	/*const tarefasFiltradas = tarefas.filter(tarefa => {
-		if (filtro === 'pendentes') return !tarefa.completed;
-		if (filtro === 'concluidas') return tarefa.completed;
-		return true;
-	});
-	
-	const tarefasOrdenadas = [...tarefasFiltradas].sort((a, b) => {
-		if (ordenacao === 'prioridade') {
-			const ordem = { high: 3, medium: 2, low: 1 };
-			return ordem[b.priority] - ordem[a.priority];
+	function removerTarefasExpiradas() {
+		const agora = Date.now();
+		const todasTarefas = JSON.parse(localStorage.getItem('tarefas') || '[]');
+		
+		const tarefasAtualizadas = todasTarefas.filter((t: Tarefa) => {
+			if (!t.completed) return true;
+			if (!t.completedAt) return true;
+			
+			return (agora - t.completedAt) <= tempoLimite;
+		});
+		
+		if (todasTarefas.length !== tarefasAtualizadas.length) {
+			localStorage.setItem('tarefas', JSON.stringify(tarefasAtualizadas));
+			setTarefas(tarefasAtualizadas);
+			console.log(`Removidas ${todasTarefas.length - tarefasAtualizadas.length} tarefas expiradas`);
 		}
-		return (b.createdAt || 0) - (a.createdAt || 0);
-	});*/
+	}
+	
+	useEffect(() => {
+		removerTarefasExpiradas();
+		
+		const intervalo = setInterval(removerTarefasExpiradas, 5000); // Verifica a cada 5 segundos
+		return () => clearInterval(intervalo);
+	}, []);
+	
+	// define a ordem que deve aparecer pela prioridade
+	function ordenarPorPrioridade(lista: Tarefa[]) {
+		const ordem = {high: 3, medium: 2, low: 1};
+		return [...lista].sort((a, b) =>
+			(ordem[b.priority as keyof typeof ordem] || 0) -
+			(ordem[a.priority as keyof typeof ordem] || 0)
+		);
+	}
 	
 	function deletarTarefa(id: number) {
 		const tarefasAtuais = JSON.parse(localStorage.getItem('tarefas') as string) || [];
 		const novasTarefas = tarefasAtuais.filter((tarefa: Tarefa) => tarefa.id !== id);
 		localStorage.setItem('tarefas', JSON.stringify(novasTarefas));
 		setTarefas(novasTarefas);
-		// REMOVA: window.location.reload();
 	}
 	
 	function iniciarEdicao(tarefa: Tarefa) {
@@ -62,10 +90,32 @@ export function ListTask() {
 	}
 	
 	function salvarEdicao() {
+		if (!novoTitulo.trim()) {
+			alert('Digite um título para a tarefa!');
+			return;
+		}
+		
+		// Validação de limite de 30 caracteres
+		if (novoTitulo.length > 30) {
+			alert('Máximo de 30 caracteres!');
+			return;
+		}
+		
+		// Validação de título duplicado
+		const tarefaExistente = tarefas.find(t =>
+			t.id !== editandoId &&
+			t.title.toLowerCase() === novoTitulo.toLowerCase()
+		);
+		
+		if (tarefaExistente) {
+			alert('Já existe uma tarefa com este título!');
+			return;
+		}
+		
 		const todasTarefas = JSON.parse(localStorage.getItem('tarefas') || '[]');
 		const tarefasAtualizadas = todasTarefas.map((t: Tarefa) =>
 			t.id === editandoId
-				? { ...t, title: novoTitulo, priority: novaPrioridade }
+				? {...t, title: novoTitulo, priority: novaPrioridade}
 				: t
 		);
 		
@@ -96,90 +146,91 @@ export function ListTask() {
 	
 	return (
 		<>
-			<h3 className={styles.title}>TAREFAS</h3>
-			{/*<div className={styles.controles}>
-				<select value={filtro} onChange={(e) => setFiltro(e.target.value)}>
-					<option value="todas">Todas</option>
-					<option value="pendentes">Pendentes</option>
-					<option value="concluidas">Concluídas</option>
-				</select>
-				
-				<select value={ordenacao} onChange={(e) => setOrdenacao(e.target.value)}>
-					<option value="prioridade">Prioridade</option>
-					<option value="data">Data</option>
-				</select>
-				
-				<p>Mostrando {tarefasOrdenadas.length} de {tarefas.length} tarefas</p>
-			</div>*/}
-			<div className={styles.tasksContainer}>
-				{tarefas.map(tarefa => (
-					<div key={tarefa.id} className={styles.task}>
-						{editandoId === tarefa.id ? (
-							// MODO EDIÇÃO
-							<div className={styles.edicaoContainer}>
-								<input
-									className={styles.inputEdicao}
-									value={novoTitulo}
-									onChange={(e) => setNovoTitulo(e.target.value)}
-									maxLength={30}
-								/>
-								<select
-									className={styles.selectEdicao}
-									value={novaPrioridade}
-									onChange={(e) => setNovaPrioridade(e.target.value)}
-								>
-									<option value="low">Baixa</option>
-									<option value="medium">Média</option>
-									<option value="high">Alta</option>
-								</select>
-								<button className={styles.btnSalvarEdicao} onClick={salvarEdicao}>
-									Salvar
-								</button>
-								<button className={styles.btnCancelarEdicao} onClick={() => setEditandoId(null)}>
-									Cancelar
-								</button>
-							</div>
-						) : (
-							// MODO VISUALIZAÇÃO
-							<div className={styles.taskContent}>
-								<strong className={styles.taskTitle}>
-									{tarefa.title.length > 40
-										? `${tarefa.title.substring(0, 40)}...`
-										: tarefa.title}
-								</strong>
-								<span className={`${styles.prioridade} ${styles[tarefa.priority]}`}>
+			{tarefasParaExibir.length === 0 ? (
+				// Quando NÃO tem tarefas
+				<h3 className={styles.title}>TAREFAS - Nenhuma tarefa encontrada! Crie sua primeira tarefa.</h3>
+			) : (
+				<>
+					<h3 className={styles.title}>TAREFAS</h3>
+					<div className={styles.tasksContainer}>
+						{tarefasParaExibir.map(tarefa => (
+							<div
+								key={tarefa.id}
+								className={`${styles.task} ${tarefa.completed ? styles.concluido : ''}`}
+							>
+								{editandoId === tarefa.id ? (
+									// MODO EDIÇÃO
+									<div className={styles.edicaoContainer}>
+										<input
+											className={styles.inputEdicao}
+											value={novoTitulo}
+											onChange={(e) => {
+												const valor = e.target.value;
+												setNovoTitulo(valor);
+											}}
+											maxLength={30}
+										/>
+										<select
+											className={styles.selectEdicao}
+											value={novaPrioridade}
+											onChange={(e) => setNovaPrioridade(e.target.value)}
+										>
+											<option value="low">Baixa</option>
+											<option value="medium">Média</option>
+											<option value="high">Alta</option>
+										</select>
+										<button className={styles.btnSalvarEdicao} onClick={salvarEdicao}>
+											Salvar
+										</button>
+										<button className={styles.btnCancelarEdicao} onClick={() => setEditandoId(null)}>
+											Cancelar
+										</button>
+									</div>
+								) : (
+									// MODO VISUALIZAÇÃO
+									<div className={styles.taskContent}>
+										<strong className={styles.taskTitle}>
+											{tarefa.title.length > 40
+												? `${tarefa.title.substring(0, 40)}...`
+												: tarefa.title}
+										</strong>
+										<span className={`${styles.prioridade} ${styles[tarefa.priority]}`}>
 									{tarefa.priority === 'low' ? 'Baixa' :
 										tarefa.priority === 'medium' ? 'Média' : 'Alta'}
 								</span>
-								<div className={styles.btnTask}>
-									<button
-										className={styles.btConcluida}
-										onClick={() => toggleConcluida(tarefa.id)}
-									>
-										{tarefa.completed ? (
-											<CheckCircle
-												size={20}
-												color="var(--primary)"
-											/>
-										) : (
-											<XCircle
-												size={20}
-												color="var(--primary)"
-											/>
-										)}
-									</button>
-									<button className={styles.btEditar} onClick={() => editarTarefa(tarefa.id)}>
-										<Edit size={20} color='var(--primary)' />
-									</button>
-									<button className={styles.btDeletar} onClick={() => deletarTarefa(tarefa.id)}>
-										<Trash2 size={20} color='var(--primary)' />
-									</button>
-								</div>
+										<div className={styles.btnTask}>
+											<button
+												className={styles.btConcluida}
+												onClick={() => toggleConcluida(tarefa.id)}
+											>
+												{tarefa.completed ? (
+													<XCircle
+														size={20}
+														color={tarefa.completed ? "var(--primary-fundo)" : "var(--primary)"}
+													/>
+												) : (
+													<CheckCircle
+														size={20}
+														color={tarefa.completed ? "var(--primary-fundo)" : "var(--primary)"}
+													/>
+												)}
+											</button>
+											<button className={styles.btEditar} onClick={() => editarTarefa(tarefa.id)}>
+												<Edit size={20} color={tarefa.completed ? "var(--primary-fundo)" : "var(--primary)"}
+												/>
+											</button>
+											<button className={styles.btDeletar} onClick={() => deletarTarefa(tarefa.id)}>
+												<Trash2 size={20} color={tarefa.completed ? "var(--primary-fundo)" : "var(--primary)"}
+												/>
+											</button>
+										</div>
+									</div>
+								)}
 							</div>
-						)}
+						))}
 					</div>
-				))}
-			</div>
+				</>
+			)}
 		</>
 	);
 }
