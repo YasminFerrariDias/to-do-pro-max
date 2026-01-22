@@ -48,25 +48,49 @@
     border: none;
     margin-left: 0.5rem;
 }
-
-.btnS, .btnC {
-    background-color: var(--primary-fundo);
-    border: none;
-    color: var(--primary-card);
+.edicaoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
 }
 
-.btnS {
-    margin-left: 14rem;
+.inputEdicao {
+    padding: 0.3rem;
+    border: 1px solid var(--primary);
+    border-radius: 0.5rem;
+    margin: -1rem;
+    width: 32.5rem !important;
+    min-width: 32.5rem !important;
+    max-width: 32.5rem !important;
 }
 
-.btnC {
-    margin-left: 1rem;
+.selectEdicao {
+    padding: 0.3rem;
+    margin: 0.5rem;
+    margin-left: -1rem;
+    border: 1px solid var(--primary);
+    border-radius: 0.5rem;
+    width: 10rem;
+    flex: 1;
 }
 
-.prioritiEdt {
-    padding: 1px;
+.btnSalvarEdicao {
+    background-color: var(--primary);
+    color: var(--primary-fundo);
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+    width: 8rem;
+    margin-top: -3.5rem;
+    margin-left: 15rem;
 }
 
-.inpEdt {
-    padding: 0.5rem;
+.btnCancelarEdicao {
+    background-color: var(--primary-color);
+    color: #333;
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+    width: 8rem;
+    margin-top: -3rem;
+    margin-left: 23.5rem;
 }

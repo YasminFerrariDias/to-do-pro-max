@@ -13,8 +13,9 @@ export function NewTask() {
         input.placeholder = 'Qual sua próxima tarefa?';
         input.name = 'title';
         input.maxLength = 30;
-        input.oninput = function() {
-            if (this.value.length >= 30) {
+        input.oninput = (e) => {
+            const valor = (e.target as HTMLInputElement).value;
+            if (valor.length >= 30) {
                 alert('Máximo de 30 caracteres atingido!');
             }
         };
@@ -103,7 +104,7 @@ export function NewTask() {
             const tarefasSalvas = localStorage.getItem('tarefas');
             const listaTarefas = tarefasSalvas ? JSON.parse(tarefasSalvas) : [];
 
-            const tarefaExistente = listaTarefas.find(tarefa =>
+            const tarefaExistente = listaTarefas.find((tarefa: { title: string; }) =>
                 tarefa.title.toLowerCase() === titulo.toLowerCase()
             );
 
